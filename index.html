@@ -4,10 +4,10 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="MeshLRM">
-  <meta name="keywords" content="LRM, NeRF, High-Quality Mesh">
+  <meta name="description" content="PRM">
+  <meta name="keywords" content="LRM, PBR, High-Quality Mesh">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MeshLRM</title>
+  <title>PRM</title>
 
 
 
@@ -37,7 +37,7 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">MeshLRM: Large Reconstruction Model for High-Quality Mesh</h1>
+            <h1 class="title is-1 publication-title">PRM: Photometric Stereo based Large Reconstruction Model</h1>
         </div>
       </div>
     </div>
@@ -52,9 +52,7 @@
       <div class="columns is-centered has-text-centered">
         <div class="column is-full-width">
           <div class="column">
-            <video id="teaser" autoplay muted loop playsinline height="100%">
-              <source src="videos/teaser.mp4" type="video/mp4">
-            </video>
+            <img id="teaser" src="images/teaser.png" alt="Teaser Image" height="100%">
           </div>
         </div>
       </div>
@@ -69,16 +67,15 @@
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              We propose MeshLRM, a novel LRM-based approach that can reconstruct a high-quality mesh 
-              from merely four input images in less than one second. Different from previous large reconstruction 
-              models (LRMs) that focus on NeRF-based reconstruction, MeshLRM incorporates differentiable mesh 
-              extraction and rendering within the LRM framework. This allows for end-to-end mesh reconstruction 
-              by fine-tuning a pre-trained NeRF LRM with mesh rendering. Moreover, we improve the LRM architecture 
-              by simplifying several complex designs in previous LRMs. MeshLRM's NeRF initialization is 
-              sequentially trained with low- and high-resolution images; this new LRM training strategy enables 
-              significantly faster convergence and thereby leads to better quality with less compute. Our approach 
-              achieves state-of-the-art mesh reconstruction from sparse-view inputs and also allows for many 
-              downstream applications, including text-to-3D and single-image-to-3D generation.
+              We propose PRM, a novel photometric stereo based large reconstruction model to reconstruct high-quality meshes with fine-grained local details. 
+              Unlike previous large reconstruction models that prepare images under fixed and simple lighting as both input and supervision, 
+              PRM renders photometric stereo images by varying materials and lighting for the purposes, which not only improves the precise local details 
+              by providing rich photometric cues but also increases the model’s robustness to variations in the appearance of input images. To offer enhanced 
+              flexibility of images rendering, we incorporate a real-time rendering method and mesh rasterization for online images rendering. Moreover, in 
+              employing an explicit mesh as our 3D representation, PRM ensures the application of differentiable PBR, which supports the utilization of multiple 
+              photometric supervisions and better models the specular color for high-quality geometry optimization. Our PRM leverages photometric stereo images 
+              to achieve high-quality reconstructions with fine-grained local details, even amidst sophisticated image appearances. Extensive experiments demonstrate 
+              that PRM significantly outperforms other models.
             </p><br>
           </div>
         </div>
@@ -89,16 +86,15 @@
       <div class="columns is-centered has-text-centered">
         <div class="column is-full-width">
           <div class="column">
-            <img src="videos/pipeline.png" alt="pipeline" style="width:100%">
+            <img src="images/prm" alt="pipeline" style="width:100%">
           </div>
         </div>
       </div>
-      <p><b>Pipeline:</b> The model architecture of MeshLRM. The images are first patchified to tokens.
-        The transformer takes the concatenated image and triplane tokens as input. The output
-        triplane tokens are upsampled with the unpatchifying operator while the output image
-        tokens are dropped (not drawn in figure). With two tiny MLPs for density and color
-        decoding, this model supports both the volumetric rendering and the DiffMC
-        fine-tuning. We render our final mesh output on the rightmost of the figure.</p>
+      <p><b>Pipeline:</b> Overview of our framework. During training, photometric stereo images are rendered using PBR with randomly varied materials, 
+        lighting, and camera poses, along with depth, normal, albedo, and lighting maps. Images are encoded as a mesh through the network. 
+        All associated maps, along with the images, are used for supervision. During inference, an optional multi-view diffusion model takes a 
+        single image as input and outputs multi-view images, which are then fed into the network for mesh prediction. Relighting and material 
+        editing functionalities are also supported.</p>
     </div>
   </section>
 
